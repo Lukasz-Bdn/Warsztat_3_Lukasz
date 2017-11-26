@@ -1,12 +1,12 @@
 <?xml	version="1.0"	encoding="UTF-8"?>
 <Context>
-<Resource	name="jdbc/school"
+<Resource	name="jdbc/warsztat_2"
 	auth="Container"
 	type="javax.sql.DataSource"
 	username="root"
 	password="coderslab"
 	driverClassName="com.mysql.jdbc.Driver"
-	url="jdbc:mysql://localhost:3306/school"
+	url="jdbc:mysql://localhost:3306/warsztat_2"
 	maxActive="100"
 	maxIdle="30"
 	maxWait="10000"	/>
