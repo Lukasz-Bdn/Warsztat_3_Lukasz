@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import pl.coderslab.warsztat3.db.DbUtil;
 
 public class Solution {
 	private int id;
@@ -29,6 +32,27 @@ public class Solution {
 		this.id = 0;
 		this.created = "";
 		this.updated = "";
+		this.description = description;
+		this.exercise_id = exercise_id;
+		this.users_id = users_id;
+	}
+	
+	public Solution(int id, String updated, String description, int users_id) {
+		super();
+		this.id = id;
+		this.created = "";
+		this.updated = updated;
+		this.description = description;
+		this.users_id = users_id;
+		this.exercise_id = 0;
+	}
+	
+	
+	public Solution(int id, String created, String updated, String description, int exercise_id, int users_id) {
+		super();
+		this.id = id;
+		this.created = created;
+		this.updated = updated;
 		this.description = description;
 		this.exercise_id = exercise_id;
 		this.users_id = users_id;
@@ -85,7 +109,7 @@ public class Solution {
 			if (rs.next()) {
 				this.id = rs.getInt(1);
 			}
-			Solution tempSolution = Solution.loadById(conn, this.id);
+			Solution tempSolution = Solution.loadById(this.id);
 			this.created = tempSolution.created;
 			this.updated = tempSolution.updated;
 
@@ -100,32 +124,13 @@ public class Solution {
 			ps.setInt(3, this.users_id);
 			ps.setInt(4, this.id);
 			ps.executeUpdate();
-			Solution tempSolution = Solution.loadById(conn, this.id);
+			Solution tempSolution = Solution.loadById(this.id);
 			this.updated = tempSolution.updated;
 			
 			ps.close();
 		}
 	}
 	
-	public static Solution loadById(Connection conn, int id) throws SQLException {
-		String sql = "SELECT * FROM solution WHERE id = ?";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ps.setInt(1, id);
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-			Solution solution = new Solution();
-			solution.id = rs.getInt(1);
-			solution.created = rs.getString(2);
-			solution.updated = rs.getString(3);
-			solution.description = rs.getString(4);
-			solution.exercise_id = rs.getInt(5);
-			solution.users_id = rs.getInt(6);
-			rs.close();
-			ps.close();
-			return solution;
-		}
-		return null;		
-	}
 	
 	public static Solution[] loadAll(Connection conn) throws SQLException {
 		ArrayList<Solution> solutionArrayList = new ArrayList<Solution>();
@@ -185,4 +190,32 @@ public class Solution {
 		return solutionArray;
 	}
 	
+	public static List<SolutionWithUser> loadAllWithUser(int count) {
+		Connection conn;
+		List<SolutionWithUser> result = new ArrayList<>();
+		try {
+			conn = DbUtil.getConn();
+			result = SolutionDao.loadAllWithUser(conn, count);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static Solution loadById(int id) {
+		Connection conn;
+		Solution result = new Solution();
+		try {
+			conn = DbUtil.getConn();
+			result = SolutionDao.loadById(conn, id);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		
+	}
 }
