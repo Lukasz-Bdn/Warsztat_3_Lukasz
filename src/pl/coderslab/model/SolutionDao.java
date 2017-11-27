@@ -54,6 +54,7 @@ public class SolutionDao {
 	}
 
 	public static List<Solution> loadByUserId(Connection conn, int userId) throws SQLException {
+		List<Solution> result = new ArrayList<>();
 		String sql ="SELECT id,created,updated,description,exercise_id,users_id FROM solution "
 				+ "WHERE users_id=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
@@ -64,9 +65,12 @@ public class SolutionDao {
 			String created = rs.getString("created");
 			String updated = rs.getString("updated");
 			String description = rs.getString("description");
-			
-			Solution loadedSolution = new Solution()
+			int exercise_id = rs.getInt("exercise_id");
+			int users_id = rs.getInt("users_id");
+			Solution loadedSolution = new Solution(id, created, updated, description, exercise_id, users_id);
+			result.add(loadedSolution);
 		}
+		return result;
 	}
 
 }

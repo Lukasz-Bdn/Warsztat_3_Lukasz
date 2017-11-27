@@ -26,9 +26,22 @@
 			<td>${loadedUser.username}</td>
 			<td><c:out value="${loadedUser.email}"></c:out> </td>
 			<td><c:out value="${loadedUser.user_group_id}"></c:out></td>
+		</tr>	
+	</table>
+	<h4>Solutions for this user:</h4>
+	<table border="1">
+		<tr>
+			<td>Description</td>
+			<td>Created</td>
+			<td>Updated</td>
 		</tr>
-	
-	
+		<c:forEach var="solution" items="${solutionsForUser}">
+			<tr>
+				<td><c:out value="${solution.description}"></c:out></td>
+				<td><c:out value="${solution.created}"></c:out></td>
+				<td><c:out value="${solution.updated}"></c:out></td>
+			</tr>
+		</c:forEach>
 	
 	</table>
 

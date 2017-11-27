@@ -9,20 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.coderslab.model.Solution;
-import pl.coderslab.model.User;
+import pl.coderslab.model.UserGroup;
 
 /**
- * Servlet implementation class UserDetails
+ * Servlet implementation class UsersGroupPanel
  */
-@WebServlet("/UserDetails")
-public class UserDetails extends HttpServlet {
+@WebServlet("/UsersGroupPanel")
+public class UsersGroupPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserDetails() {
+    public UsersGroupPanel() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,13 +30,9 @@ public class UserDetails extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		User loadedUser = User.loadUserById(id);
-		request.setAttribute("loadedUser", loadedUser);
-		List<Solution> solutionsForUser = Solution.loadByUserId(id);
-		request.setAttribute("solutionsForUser", solutionsForUser);		
-		getServletContext().getRequestDispatcher("/WEB-INF/user_details.jsp").forward(request, response);
-		
+		List<UserGroup> userGroups = UserGroup.loadAll();
+		request.setAttribute("userGroups", userGroups);
+		getServletContext().getRequestDispatcher("/WEB-INF/user_group_panel.jsp").forward(request, response);
 	}
 
 	/**
