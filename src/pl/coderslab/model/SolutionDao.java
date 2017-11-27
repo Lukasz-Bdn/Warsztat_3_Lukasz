@@ -53,4 +53,20 @@ public class SolutionDao {
 		return null;		
 	}
 
+	public static List<Solution> loadByUserId(Connection conn, int userId) throws SQLException {
+		String sql ="SELECT id,created,updated,description,exercise_id,users_id FROM solution "
+				+ "WHERE users_id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, userId);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String created = rs.getString("created");
+			String updated = rs.getString("updated");
+			String description = rs.getString("description");
+			
+			Solution loadedSolution = new Solution()
+		}
+	}
+
 }

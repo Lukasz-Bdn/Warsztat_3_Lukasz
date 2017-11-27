@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import pl.coderslab.warsztat3.db.DbUtil;
 
 public class UserGroup {
 	private int id;
@@ -19,6 +22,12 @@ public class UserGroup {
 	public UserGroup(String name) {
 		super();
 		this.id = 0;
+		this.name = name;
+	}
+
+	public UserGroup(int id, String name) {
+		super();
+		this.id = id;
 		this.name = name;
 	}
 
@@ -74,25 +83,8 @@ public class UserGroup {
 		return null;
 	}
 	
-	public static UserGroup[] loadAll(Connection conn) throws SQLException {
-		ArrayList<UserGroup> ugArrayList = new ArrayList<UserGroup>();
-		String sql = "SELECT * FROM user_group;";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		while (rs.next()) {
-			UserGroup userGroup = new UserGroup();
-			userGroup.id = rs.getInt("id");
-			userGroup.name = rs.getString("name");
-			ugArrayList.add(userGroup);
-		}
-		ps.close();
-		rs.close();
-		UserGroup[] ugArray = new UserGroup[ugArrayList.size()];
-		ugArray = ugArrayList.toArray(ugArray);
-		return ugArray;
-	}
-	
-	public void deleteFromDb(Connection conn) throws SQLException {
+
+	public void deleteFromDb(Connection conn) throws SQLException{
 		if (this.id != 0) {
 			String sql = "DELETE FROM user_group WHERE id=?;";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -101,5 +93,20 @@ public class UserGroup {
 			this.id = 0;
 			ps.close();
 		}
+	}
+	
+	public static List<UserGroup> loadAll(){
+		Connection conn;
+		List<UserGroup> result = new ArrayList<>();
+		try {
+			conn = DbUtil.getConn();
+			result = UserGroupDao.loadAll(conn);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		
 	}
 }

@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import pl.coderslab.warsztat3.db.DbUtil;
 
 public class User {
 	private long id;
@@ -24,6 +27,19 @@ public class User {
 		this.user_group_id = 0;
 	}
 	
+	
+	
+	public User(long id, String username, String email, String password, int user_group_id) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.user_group_id = user_group_id;
+	}
+
+
+
 	public User(String username, String email, String password) {
 		super();
 		this.id = 0;
@@ -108,29 +124,6 @@ public class User {
 		}
 	}
 	
-	public static User loadUserById(Connection conn, int id) throws SQLException {
-		/*
-		 * Reads a record from users table in database and returns a User object that
-		 * represents it.
-		 */
-		String sql = "SELECT * FROM users WHERE id=?;";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ps.setInt(1, id);
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-			User loadedUser = new User();
-			loadedUser.id = rs.getInt("id");
-			loadedUser.username = rs.getString("username");
-			loadedUser.email = rs.getString("email");
-			loadedUser.password = rs.getString("password");
-			loadedUser.user_group_id = rs.getInt("user_group_id");
-			rs.close();
-			ps.close();
-			return loadedUser;
-		}
-		ps.close();
-		return null;
-	}
 	
 	public static User[] loadAll(Connection conn) throws SQLException {
 		/*
@@ -167,24 +160,35 @@ public class User {
 		}
 	}
 	
-	public static User[] loadAllByGroupId(Connection conn, int user_group_id) throws SQLException {
-		ArrayList<User> users = new ArrayList<User>();
-		String sql = "SELECT * FROM users WHERE user_group_id=?;";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ps.setInt(1, user_group_id);
-		ResultSet rs = ps.executeQuery();
-		while (rs.next()) {
-			User loadedUser = new User();
-			loadedUser.id = rs.getInt(1);
-			loadedUser.username = rs.getString(2);
-			loadedUser.email = rs.getString(3);
-			loadedUser.password = rs.getString(4);
-			users.add(loadedUser);
+	public static List<User> loadAllByGroupId(int user_group_id) {
+		Connection conn;
+		List<User> result = new ArrayList<>();
+		try {
+			conn = DbUtil.getConn();
+			result = UserDao.loadAllByGroupId(conn, user_group_id);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		rs.close();
-		User[] userArray = new User[users.size()];
-		userArray = users.toArray(userArray);
-		return userArray;
-
+		return result;
+	}
+	
+	public static User loadUserById(int id){
+		/*
+		 * Reads a record from users table in database and returns a User object that
+		 * represents it.
+		 */
+		Connection conn;
+		User result = new User();
+		try {
+			conn = DbUtil.getConn();
+			result = UserDao.loadUserById(conn, id);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

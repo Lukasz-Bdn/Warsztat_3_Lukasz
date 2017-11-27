@@ -27,4 +27,28 @@ public class UserDao {
 		rs.close();
 		return result;
 	}
+	
+	public static User loadUserById(Connection conn, int id) throws SQLException {
+		/*
+		 * Reads a record from users table in database and returns a User object that
+		 * represents it.
+		 */
+		String sql = "SELECT * FROM users WHERE id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			int userId = rs.getInt("id");
+			String username = rs.getString("username");
+			String email = rs.getString("email");
+			String password = rs.getString("password");
+			int user_group_id = rs.getInt("user_group_id");
+			rs.close();
+			ps.close();
+			User loadedUser = new User(userId, username, email, password, user_group_id);
+			return loadedUser;
+		}
+		ps.close();
+		return null;
+	}
 }

@@ -30,7 +30,7 @@ public class LoadSolutionById extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		Solution solution = Solution.loadById(id);
-		request.setAttribute("solution", solution.getDescription());
+		request.setAttribute("solution", solution);
 		getServletContext().getRequestDispatcher("/WEB-INF/solution_details.jsp").forward(request, response);
 	}
 

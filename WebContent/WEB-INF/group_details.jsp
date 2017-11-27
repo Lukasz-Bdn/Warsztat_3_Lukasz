@@ -14,7 +14,24 @@
 
 	<%@ include file="/WEB-INF/fragments/header.jspf"%>
 
-	<h4>All users in this group ${usersInGroup.user_group_id}:</h4>
+	<h4>All users in this group (group id = ${groupId}):</h4>
+	
+	<table border='1'>
+		<tr>
+			<td>User name:</td>
+			<td>Actions:</td>
+		</tr>
+		
+		<c:forEach var="user" items="${usersInGroup}">
+			<tr>
+				<td><c:out value="${user.username}"></c:out></td>
+				<td><a href='UserDetails?id=${user.id}'>User details</a></td>
+			</tr>
+		
+		</c:forEach>
+	
+	
+	</table>
 	
 	<%@ include file="/WEB-INF/fragments/footer.jspf"%>
 

@@ -1,9 +1,6 @@
 package pl.coderslab.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,21 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.coderslab.model.Solution;
-import pl.coderslab.model.SolutionDao;
-import pl.coderslab.model.SolutionWithUser;
-import pl.coderslab.warsztat3.db.DbUtil;
+import pl.coderslab.model.User;
 
 /**
- * Servlet implementation class Home
+ * Servlet implementation class UserDetails
  */
-@WebServlet("/")
-public class Home extends HttpServlet {
+@WebServlet("/UserDetails")
+public class UserDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public UserDetails() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,10 +31,14 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int count = Integer.parseInt(getServletContext().getInitParameter("number-solutions"));
-		List<SolutionWithUser> solutions = Solution.loadAllWithUser(count);
-		request.setAttribute("solutions", solutions);
-		getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+		int id = Integer.parseInt(request.getParameter("id"));
+		User loadedUser = User.loadUserById(id);
+		request.setAttribute("loadedUser", loadedUser);
+		List<Solution> solutionForUser = Solution.loadByUserId(id);
+		
+		
+		getServletContext().getRequestDispatcher("/WEB-INF/user_details.jsp").forward(request, response);
+		
 	}
 
 	/**

@@ -3,4 +3,4 @@
     pageEncoding="UTF-8"%>
     
 <a href="Home">Homepage</a>
-<a href="Home">Show all user groups</a>
+<a href="GetUserGroups">Show all user groups</a>

@@ -14,6 +14,7 @@
 
 	<%@ include file="/WEB-INF/fragments/header.jspf"%>
 	<h3>Homepage</h3>
+	<h4>Last 5 solutions</h4>
 	
 	<table border="1">
 		<tr>

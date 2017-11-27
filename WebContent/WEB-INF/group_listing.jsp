@@ -15,7 +15,7 @@
 
 	<h4>Available groups:</h4>
 	
-	<table>
+	<table border="1">
 		<tr>
 			<td>Group name:</td>
 			<td>Details</td>

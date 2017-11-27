@@ -218,4 +218,18 @@ public class Solution {
 		return result;
 		
 	}
+
+	public static List<Solution> loadByUserId(int id) {
+		Connection conn;
+		List<Solution> result = new ArrayList<>();
+		try {
+			conn = DbUtil.getConn();
+			result = SolutionDao.loadByUserId(conn, id);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
