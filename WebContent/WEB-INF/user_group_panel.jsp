@@ -17,8 +17,8 @@
 	
 	<table border="1">
 		<tr>
-			<td>Group name:</td>
-			<td>Details</td>
+			<th scope="col">Group name:</th>
+			<th scope="col">Details</th>
 		</tr>
 		
 		<c:forEach var="ug" items="${userGroups}">

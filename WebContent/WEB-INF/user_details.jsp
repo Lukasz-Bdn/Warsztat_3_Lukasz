@@ -18,9 +18,9 @@
 	
 	<table border="1">
 		<tr>
-			<td>Username</td>
-			<td>E-mail</td>
-			<td>User group</td>
+			<th scope="col">Username</th>
+			<th scope="col">E-mail</th>
+			<th scope="col">User group</th>
 		</tr>
 		<tr>
 			<td>${loadedUser.username}</td>

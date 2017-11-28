@@ -18,8 +18,8 @@
 	
 	<table border='1'>
 		<tr>
-			<td>User name:</td>
-			<td>Actions:</td>
+			<th scope="col">User name:</th>
+			<th scope="col">Actions:</th>
 		</tr>
 		
 		<c:forEach var="user" items="${usersInGroup}">

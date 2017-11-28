@@ -18,10 +18,10 @@
 	
 	<table border="1">
 		<tr>
-			<td>Title</td>
-			<td>Author</td>
-			<td>Last modified</td>
-			<td>Actions</td>
+			<th scope="col">Title</th>
+			<th scope="col">Author</th>
+			<th scope="col">Last modified</th>
+			<th scope="col">Actions</th>
 		</tr>
 		
 		<c:forEach var="sol" items="${solutions}">

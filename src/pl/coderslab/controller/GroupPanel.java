@@ -32,7 +32,6 @@ public class GroupPanel extends HttpServlet {
 		UserGroup userGroup = UserGroup.loadById(groupId);
 		request.setAttribute("userGroup", userGroup);
 		getServletContext().getRequestDispatcher("/WEB-INF/group_panel.jsp").forward(request, response);
-		
 	}
 
 	/**

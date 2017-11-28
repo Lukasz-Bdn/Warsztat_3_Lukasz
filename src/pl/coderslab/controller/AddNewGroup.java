@@ -33,5 +33,4 @@ public class AddNewGroup extends HttpServlet {
 		newGroup.saveToDb();
 		getServletContext().getRequestDispatcher("/UsersGroupPanel").forward(request, response);
 	}
-
 }

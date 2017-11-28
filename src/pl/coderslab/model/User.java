@@ -48,6 +48,19 @@ public class User {
 		setPassword(password);
 		this.user_group_id = 0;
 	}
+	
+	
+
+	public User(String username, String email, String password, int user_group_id) {
+		super();
+		this.id = 0;
+		this.username = username;
+		this.email = email;
+		setPassword(password);
+		this.user_group_id = user_group_id;
+	}
+
+
 
 	public String getUsername() {
 		return username;
@@ -89,65 +102,10 @@ public class User {
 		return id;
 	}
 	
-	public void saveToDb(Connection conn) throws SQLException {
-		/*
-		 * Saves an object to database.
-		 */
-		if (this.id == 0) {
-			String sql = "INSERT INTO users(username, email, password, user_group_id) "
-					+ "VALUES(?, ?, ?, ?);";
-			String[] generatedColumns = {"ID"};
-			PreparedStatement ps = conn.prepareStatement(sql, generatedColumns);
-			ps.setString(1, this.username);
-			ps.setString(2, this.email);
-			ps.setString(3, this.password);
-			ps.setInt(4, user_group_id);
-			ps.executeUpdate();
-			ResultSet gk = ps.getGeneratedKeys();
-			if (gk.next()) {
-				this.id = gk.getLong(1); // reads automatically generated id (AUTO_INCREMENT)
-			}
-			gk.close();
-			ps.close();
-			
-		} else {
-			String sql = "UPDATE users SET username =?, email=?, password=?, user_group_id =? "
-					+ "WHERE id = ?";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, this.username);
-			ps.setString(2,  this.email);
-			ps.setString(3, this.password);
-			ps.setInt(4, this.user_group_id);
-			ps.setLong(5, this.id);
-			ps.executeUpdate();
-			ps.close();
-		}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
-	
-	public static User[] loadAll(Connection conn) throws SQLException {
-		/*
-		 * Reads all records from users table in database and returns an array of 
-		 * user objects. This method is static.
-		 */
-		ArrayList<User> users = new ArrayList<User>();
-		String sql = "SELECT * FROM users;";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		while (rs.next()) {
-			User loadedUser = new User();
-			loadedUser.id = rs.getInt(1);
-			loadedUser.username = rs.getString(2);
-			loadedUser.email = rs.getString(3);
-			loadedUser.password = rs.getString(4);
-			loadedUser.user_group_id = rs.getInt(5);
-			users.add(loadedUser);
-		}
-		rs.close();
-		User[] userArray = new User[users.size()];
-		userArray = users.toArray(userArray);
-		return userArray;
-	}
 	
 	public void deleteFromDb(Connection conn) throws SQLException {
 		if (this.id != 0) {
@@ -190,5 +148,37 @@ public class User {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	public static List<User> loadAll() {
+		/*
+		 * Reads all records from users table in database and returns an array of 
+		 * user objects. This method is static.
+		 */
+		Connection conn;
+		List<User> result = new ArrayList<>();
+		try {
+			conn = DbUtil.getConn();
+			result = UserDao.loadAll(conn);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public void saveToDb() {
+		/*
+		 * Saves an object to database.
+		 */
+		Connection conn;
+		try {
+			conn = DbUtil.getConn();
+			UserDao.saveToDb(conn, this);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
