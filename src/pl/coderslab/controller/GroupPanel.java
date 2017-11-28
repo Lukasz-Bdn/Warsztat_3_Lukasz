@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.coderslab.model.UserGroup;
+
 /**
  * Servlet implementation class GroupPanel
  */
@@ -26,6 +28,10 @@ public class GroupPanel extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int groupId = Integer.parseInt(request.getParameter("id"));
+		UserGroup userGroup = UserGroup.loadById(groupId);
+		request.setAttribute("userGroup", userGroup);
+		getServletContext().getRequestDispatcher("/WEB-INF/group_panel.jsp").forward(request, response);
 		
 	}
 
@@ -33,8 +39,12 @@ public class GroupPanel extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String newGroupName = request.getParameter("newGroupName");
+		int groupId = Integer.parseInt(request.getParameter("id"));
+		UserGroup updatedGroup = new UserGroup(groupId, newGroupName);
+		updatedGroup.saveToDb();
+		getServletContext().getRequestDispatcher("/UsersGroupPanel").forward(request, response);;
+//		doGet(request, response);
 	}
 
 }

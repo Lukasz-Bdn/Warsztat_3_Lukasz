@@ -3,7 +3,6 @@
     pageEncoding="UTF-8"%>
 <%@	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="pl.coderslab.model.UserGroup" %> 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,32 +10,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@ include file="/WEB-INF/fragments/header.jspf"%>
 
-	<h4>All UserGroups:</h4>
+	<%@ include file="/WEB-INF/fragments/header.jspf"%>
+	<h4><c:out value="Edit group ${userGroup.id}"></c:out></h4>
 	
-	<table border="1">
-		<tr>
-			<td>Group name:</td>
-			<td>Details</td>
-		</tr>
-		
-		<c:forEach var="ug" items="${userGroups}">
-			<tr>
-				<td><c:out value="${ug.name}"></c:out></td>
-				<td> <a href="GroupPanel?id=${ug.id}">Edit Group</a> </td>
-			</tr>
-		
-		</c:forEach>
-	
-	</table>
-	
-	<h5>Add new group: </h5>
-	<form method='post' action='/Warsztat_3_Lukasz/AddNewGroup'>
+	<form method='post'>
+		Edit group name:
 		<input type='text' name='newGroupName'></input>
-		<input type='submit'></input>
+		<input type='submit'></input>	
 	</form>
-	
+
 	<%@ include file="/WEB-INF/fragments/footer.jspf"%>
+
 </body>
 </html>
